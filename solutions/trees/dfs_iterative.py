@@ -35,3 +35,19 @@ def dfs_postorder_iterative(root):
             stack1.append(node.right)
     while stack2:
         print(stack2.pop().val, end=' ')
+
+
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+
+root = Node(1, Node(2, Node(4), Node(5)), Node(3))
+dfs_preorder_iterative(root)
+print()
+dfs_inorder_iterative(root)
+print()
+dfs_postorder_iterative(root)
+print()

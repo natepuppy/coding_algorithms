@@ -41,3 +41,6 @@ def bfs(node, target, adjList):
                     queue.append(neighbor)
         length += 1
     return length
+
+
+print(bfs("A", "D", adjList))

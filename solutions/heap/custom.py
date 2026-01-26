@@ -76,3 +76,12 @@ class Heap:
                 else:
                     break
             cur -= 1
+
+
+h = Heap()
+h.push(5)
+h.push(2)
+h.push(7)
+print(h.top())
+print(h.pop())
+print(h.pop())

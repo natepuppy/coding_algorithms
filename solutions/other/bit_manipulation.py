@@ -23,3 +23,6 @@ def countBits(n):
             count += 1
         n = n >> 1 # same as n // 2
     return count
+
+
+print(countBits(13))  # 1101 -> 3

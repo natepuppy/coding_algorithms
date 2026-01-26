@@ -13,3 +13,6 @@ def bucketSort(arr):
             arr[i] = n
             i += 1
     return arr
+
+
+print(bucketSort([2, 0, 1, 2, 1, 0]))

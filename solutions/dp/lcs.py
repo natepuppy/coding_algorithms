@@ -63,3 +63,11 @@ def optimizedDp(s1, s2):
                 curRow[j+1] = max(dp[j + 1], curRow[j])
         dp = curRow
     return dp[M]
+
+
+s1 = "abcde"
+s2 = "ace"
+print(dfs(s1, s2))
+print(memoization(s1, s2))
+print(dp(s1, s2))
+print(optimizedDp(s1, s2))

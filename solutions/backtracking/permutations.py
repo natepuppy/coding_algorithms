@@ -29,3 +29,7 @@ def permutationsIterative(nums):
                 nextPerms.append(pCopy)
         perms = nextPerms
     return perms
+
+
+print(permutationsRecursive([1, 2, 3]))
+print(permutationsIterative([1, 2, 3]))

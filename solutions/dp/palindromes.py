@@ -42,3 +42,8 @@ def helper(s, l, r):
         l -= 1
         r += 1
     return maxLength
+
+
+s = "babad"
+print(longest(s))
+print(longest_optimized(s))

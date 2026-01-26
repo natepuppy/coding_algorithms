@@ -28,3 +28,9 @@ def dp(n):
         dp[0] = tmp
         i += 1
     return dp[1]
+
+
+n = 10
+print(bruteForce(n))
+print(memoization(n, {}))
+print(dp(n))

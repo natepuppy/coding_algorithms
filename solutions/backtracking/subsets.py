@@ -39,3 +39,7 @@ def helper2(i, nums, curSet, subsets):
     while i + 1 < len(nums) and nums[i] == nums[i + 1]:
         i += 1
     helper2(i + 1, nums, curSet, subsets)
+
+
+print(subsetsWithoutDuplicates([1, 2, 3]))
+print(subsetsWithDuplicates([1, 2, 2]))

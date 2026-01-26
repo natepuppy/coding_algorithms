@@ -36,3 +36,5 @@ def dp(rows, cols):
             curRow[c] = curRow[c + 1] + prevRow[c]
         prevRow = curRow
     return prevRow[0] 
+
+print(dp(4, 4))

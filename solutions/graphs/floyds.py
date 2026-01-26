@@ -39,3 +39,25 @@ def cycleStart(head):
         slow = slow.next
         slow2 = slow2.next
     return slow
+
+
+class ListNode:
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
+
+
+a = ListNode(1)
+b = ListNode(2)
+c = ListNode(3)
+d = ListNode(4)
+a.next = b
+b.next = c
+c.next = d
+
+print(middleOfList(a).val)
+print(hasCycle(a))
+
+# Create a cycle for cycleStart
+d.next = b
+print(cycleStart(a).val)

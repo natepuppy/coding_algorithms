@@ -39,6 +39,8 @@ r = range(0, 1000000, 2)
 if 500250 in r:
     print("Found!")
 
+print(binary_search(arr, target))
+
 
 
 

@@ -10,3 +10,6 @@ def insertionSort(arr):
             arr[j] = tmp
             j -= 1
     return arr
+
+
+print(insertionSort([5, 2, 4, 6, 1, 3]))

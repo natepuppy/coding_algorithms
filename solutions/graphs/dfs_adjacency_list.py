@@ -36,3 +36,6 @@ def dfs(node, target, adjList, visit):
     visit.remove(node)
 
     return count
+
+
+print(dfs("A", "E", adjList, set()))

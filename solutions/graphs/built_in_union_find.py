@@ -1,4 +1,24 @@
-from disjoint_set import DisjointSet
+try:
+    from disjoint_set import DisjointSet
+except ImportError:
+    class DisjointSet:
+        def __init__(self):
+            self.parent = {}
+
+        def find(self, x):
+            if x not in self.parent:
+                self.parent[x] = x
+            if self.parent[x] != x:
+                self.parent[x] = self.find(self.parent[x])
+            return self.parent[x]
+
+        def union(self, a, b):
+            ra, rb = self.find(a), self.find(b)
+            if ra != rb:
+                self.parent[rb] = ra
+
+        def connected(self, a, b):
+            return self.find(a) == self.find(b)
 
 ds = DisjointSet()
 

@@ -30,3 +30,11 @@ class Trie:
                 return False
             curr = curr.children[c]
         return True
+
+
+trie = Trie()
+trie.insert("apple")
+trie.insert("app")
+print(trie.search("apple"))
+print(trie.search("apples"))
+print(trie.startsWith("app"))
