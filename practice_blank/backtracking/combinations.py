@@ -1,24 +1,11 @@
-# Given n numbers (1 - n), return all possible combinations
-# of size k. (n choose k math problem).
-# Time: O(k * 2^n)
-def combinations(n, k):
-    # Code will be implemented here
+# Given an array nums, return all distinct combinations whose elements sum to k.
+# Each element may be used at most once.
+# The result must not contain duplicate combinations.
+
+def combinationSum2(nums, k):
     pass
 
-def helper(i, curComb, combs, n, k):
-    # Code will be implemented here
-    pass
+nums = [1, 2, 3, 1, 6, 4]
+k = 7
 
-
-# Time: O(k * C(n, k))
-def combinations2(n, k):
-    # Code will be implemented here
-    pass
-
-def helper2(i, curComb, combs, n, k):
-    # Code will be implemented here
-    pass
-
-
-print(combinations(4, 2))
-print(combinations2(4, 2))
+print(combinationSum2(nums, k))

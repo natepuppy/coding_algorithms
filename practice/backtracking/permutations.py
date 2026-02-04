@@ -1,18 +1,33 @@
-# Time: O(n^2 * n!)
-def permutationsRecursive(nums):
-    # Code will be implemented here
-    pass
+# Given a collection of numbers, nums, that might contain 
+# duplicates, return all possible unique permutations in any order.
+# EX:
+# Input: nums = [1,2,3]
+# Output:
+# [
+#   [1,2,3],
+#   [1,3,2],
+#   [2,1,3],
+#   [2,3,1],
+#   [3,1,2],
+#   [3,2,1]
+# ]
+
+def permutations(nums):
+    result = []
+
+    def dfs(index):
+        if index == len(nums) - 1:
+            result.append(nums.copy())
+            return
         
-def helper(i, nums):   
-    # Code will be implemented here
-    pass
+        for i in range(index, len(nums)):
+            nums[index], nums[i] = nums[i], nums[index] # Swap the numbers
+            dfs(index + 1)
+            nums[index], nums[i] = nums[i], nums[index]
 
+    dfs(0)
+    
+    return result
 
-# Time: O(n^2 * n!)
-def permutationsIterative(nums):
-    # Code will be implemented here
-    pass
-
-
-print(permutationsRecursive([1, 2, 3]))
-print(permutationsIterative([1, 2, 3]))
+nums = [1,2,3]
+print(permutations(nums))

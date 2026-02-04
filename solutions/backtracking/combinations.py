@@ -1,45 +1,36 @@
-# Given n numbers (1 - n), return all possible combinations
-# of size k. (n choose k math problem).
-# Time: O(k * 2^n)
-def combinations(n, k):
-    combs = []
-    helper(1, [], combs, n, k)
-    return combs
+# Given an array nums, return all distinct combinations whose elements sum to k.
+# Each element may be used at most once.
+# The result must not contain duplicate combinations.
 
-def helper(i, curComb, combs, n, k):
-    if len(curComb) == k:
-        combs.append(curComb.copy())
-        return
-    if i > n:
-        return
-    
-    # decision to include i
-    curComb.append(i)
-    helper(i + 1, curComb, combs, n, k)
-    curComb.pop()
-    
-    # decision to NOT include i
-    helper(i + 1, curComb, combs, n, k)
+def combinationSum2(nums, k):
+    nums.sort()
+    result = []
 
+    def dfs(index, curr_nums, curr_sum):
+        if curr_sum > k:
+            return
 
-# Time: O(k * C(n, k))
-def combinations2(n, k):
-    combs = []
-    helper2(1, [], combs, n, k)
-    return combs
+        if curr_sum == k:
+            result.append(curr_nums.copy())
+            return
 
-def helper2(i, curComb, combs, n, k):
-    if len(curComb) == k:
-        combs.append(curComb.copy())
-        return
-    if i > n:
-        return
-    
-    for j in range(i, n + 1):
-        curComb.append(j)
-        helper2(j + 1, curComb, combs, n, k)
-        curComb.pop()
+        for i in range(index, len(nums)):
+            if i > index and nums[i] == nums[i - 1]:
+                continue
 
+            curr_nums.append(nums[i])
+            curr_sum += nums[i]
 
-print(combinations(4, 2))
-print(combinations2(4, 2))
+            dfs(i + 1, curr_nums, curr_sum)
+
+            curr_sum -= nums[i]
+            curr_nums.pop()
+
+    dfs(0, [], 0)
+    return result
+
+nums = [1, 2, 3, 1, 6, 4]
+# nums = [1,1,2,3,4]
+k = 7
+
+print(combinationSum2(nums, k))
