@@ -1,29 +1,39 @@
-# Find the middle of a linked list with two pointers.
-# Time: O(n), Space: O(1)
-def middleOfList(head):
-    # Code will be implemented here
-    return head
+class ListNode:
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
 
+def floyds(head):
+    if not head or not head.next:
+        return None
+    
+    fast, slow = head, head
+    has_cycle = False
 
-# Determine if the linked list contains a cycle.
-# Time: O(n), Space: O(1)
-def hasCycle(head):
-    # Code will be implemented here
-    return False
+    # Note: Not fast.next.next...
+    while fast and fast.next:
+        fast = fast.next.next
+        slow = slow.next
+
+        if fast == slow:
+            has_cycle = True
+            break
+    
+    if not has_cycle:
+        return None
+    
+    slow2 = head
+
+    while slow != slow2:
+        slow = slow.next
+        slow2 = slow2.next
+    
+    return slow
 
 
 # Determine if the linked list contains a cycle and
 # return the beginning of the cycle, otherwise return null.
 # Time: O(n), Space: O(1)
-def cycleStart(head):
-    # Code will be implemented here
-    return head
-
-
-class ListNode:
-    def __init__(self, val, next=None):
-        self.val = val
-        self.next = next
 
 
 a = ListNode(1)
@@ -34,9 +44,6 @@ a.next = b
 b.next = c
 c.next = d
 
-print(middleOfList(a).val)
-print(hasCycle(a))
-
 # Create a cycle for cycleStart
 d.next = b
-print(cycleStart(a).val)
+print(floyds(a).val)
