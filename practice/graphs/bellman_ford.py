@@ -8,7 +8,7 @@ def bellman_ford_bfs_version(n, flights, src, dst, k):
         graph = defaultdict(list)
         for u, v, w in flights:
             graph[u].append((v, w))
-    
+        
         prices = [float("inf")] * n
         prices[src] = 0
 
