@@ -1,25 +1,22 @@
-import heapq 
-
-class UnionFind:
-    def __init__(self, n):
-        # Code will be implemented here
-        pass
-    
-    def find(self, n):
-        # Code will be implemented here
-        pass
-
-    def union(self, n1, n2):
-        # Code will be implemented here
-        pass
-
+from disjoint_set import DisjointSet
 
 def minimumSpanningTree(edges, n):
-    # Code will be implemented here
-    pass
+    edges.sort(key=lambda x: x[2])
+    
+    ds = DisjointSet()
+    mst = []
 
-
-# -------- RUN IT --------
+    for u, v, w in edges:
+        if not ds.connected(u, v):
+            # If not connected, union them and add to MST
+            ds.union(u, v)
+            mst.append((u, v, w))
+            
+            # 4. Optimization: A tree with n nodes always has n-1 edges
+            if len(mst) == n - 1:
+                break
+    
+    return mst
 
 edges = [
     (1, 2, 3),
@@ -30,4 +27,4 @@ edges = [
 ]
 
 print(minimumSpanningTree(edges, 4))
-# Output: [(1, 3), (3, 4), (1, 2)]
+# Output: [(1, 3, 1), (3, 4, 2), (1, 2, 3)]

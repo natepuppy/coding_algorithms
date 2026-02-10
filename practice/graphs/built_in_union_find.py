@@ -1,22 +1,4 @@
-try:
-    from disjoint_set import DisjointSet
-except ImportError:
-    class DisjointSet:
-        def __init__(self):
-            # Code will be implemented here
-            pass
-
-        def find(self, x):
-            # Code will be implemented here
-            pass
-
-        def union(self, a, b):
-            # Code will be implemented here
-            pass
-
-        def connected(self, a, b):
-            # Code will be implemented here
-            pass
+from disjoint_set import DisjointSet
 
 ds = DisjointSet()
 
