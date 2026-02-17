@@ -55,28 +55,31 @@ class Node:
         self.right = right
     
     def insert(self, val):
-        if val <= self.val:
+        if val < self.val:
             if self.left:
                 self.left.insert(val)
             else:
                 self.left = Node(val)
         else:
+            # Handles > and ==
             if self.right:
                 self.right.insert(val)
             else:
                 self.right = Node(val)
 
     def search(self, val):
-        if val < self.val:
-            if self.left:
-                return self.left.search(val)
-        elif val > self.val:
-            if self.right:
-                return self.right.search(val)
-        elif val == self.val:
+        # Base Case
+        if val == self.val:
             return True
 
-        return False
+        if val < self.val:
+            if not self.left:
+                return False
+            return self.left.search(val)
+        else:
+            if not self.right:
+                return False
+            return self.right.search(val)
             
 
     def delete():
@@ -102,3 +105,73 @@ print(root.search(25))
 
 # print(root.exists(20)) # True
 # root = root.delete(30) # Always re-assign the root when deleting!
+
+
+
+class Node:
+    def __init__(self, val):
+        self.val = val
+        self.left = None
+        self.right = None
+
+
+class BST:
+    def __init__(self):
+        self.root = None
+
+    def insert(self, val: int):
+        def _insert(node: Node, val: int) -> Node:
+            if not node:
+                return Node(val)
+
+            if val < node.val:
+                node.left = _insert(node.left, val)
+            else:  # duplicates go right
+                node.right = _insert(node.right, val)
+
+            return node
+
+        self.root = _insert(self.root, val)
+
+    def search(self, val: int) -> bool:
+        def _search(node: Node, val: int) -> bool:
+            if not node:
+                return False
+            if node.val == val:
+                return True
+            if val < node.val:
+                return _search(node.left, val)
+            return _search(node.right, val)
+
+        return _search(self.root, val)
+
+    def delete(self, val: int):
+        def _delete(node: Node, val: int) -> Node:
+            if not node:
+                return None
+
+            if val < node.val:
+                node.left = _delete(node.left, val)
+            elif val > node.val:
+                node.right = _delete(node.right, val)
+            else:
+                # No child or one child
+                if not node.left:
+                    return node.right
+                if not node.right:
+                    return node.left
+
+                # Two children
+                successor = self._min_value_node(node.right)
+                node.val = successor.val
+                node.right = _delete(node.right, successor.val)
+
+            return node
+
+        self.root = _delete(self.root, val)
+
+    def _min_value_node(self, node: Node) -> Node:
+        curr = node
+        while curr.left:
+            curr = curr.left
+        return curr
