@@ -1,177 +1,64 @@
-import collections
-
-def pretty_print(root):
-    if not root:
-        print("Empty Tree")
-        return
-
-    # 1. Map out the tree into levels
-    levels = []
-    queue = collections.deque([(root, 0)])
-    while queue:
-        node, depth = queue.popleft()
-        if len(levels) <= depth:
-            levels.append([])
-        levels[depth].append(node)
-        
-        if node:
-            queue.append((node.left, depth + 1))
-            queue.append((node.right, depth + 1))
-        else:
-            # Add placeholders for children of None nodes to keep the grid
-            queue.append((None, depth + 1))
-        
-        # Stop if the next level is entirely None
-        if all(n is None for n, d in queue):
-            break
-
-    # 2. Calculate spacing
-    depth = len(levels)
-    max_width = 2**depth * 4
-    
-    print("\n--- Tree Visualization ---")
-    for i, level in enumerate(levels):
-        # Spacing between nodes at this level
-        gap = max_width // (2**i)
-        line = ""
-        for node in level:
-            val = str(node.val) if node else " "
-            line += val.center(gap)
-        print(line)
-        
-        # Add "branches" (optional)
-        if i < depth - 1:
-            branches = ""
-            for node in level:
-                b = "/  \\" if node else "    "
-                branches += b.center(gap)
-            print(branches)
-    print("--------------------------\n")
-
-class Node:
-    def __init__(self, val, left=None, right=None):
-        self.val   = val
-        self.left  = left
-        self.right = right
-    
-    def insert(self, val):
-        if val < self.val:
-            if self.left:
-                self.left.insert(val)
-            else:
-                self.left = Node(val)
-        else:
-            # Handles > and ==
-            if self.right:
-                self.right.insert(val)
-            else:
-                self.right = Node(val)
-
-    def search(self, val):
-        # Base Case
-        if val == self.val:
-            return True
-
-        if val < self.val:
-            if not self.left:
-                return False
-            return self.left.search(val)
-        else:
-            if not self.right:
-                return False
-            return self.right.search(val)
-            
-
-    def delete():
-        pass
-
-
-# --- Quick Usage ---
-root = Node(30)
-root.insert(45)
-root.insert(35)
-root.insert(25)
-root.insert(20)
-root.insert(15)
-
-pretty_print(root)
-
-print(root.search(15))
-print(root.search(35))
-print(root.search(30))
-print(root.search(25))
-
-
-
-# print(root.exists(20)) # True
-# root = root.delete(30) # Always re-assign the root when deleting!
-
-
-
 class Node:
     def __init__(self, val):
         self.val = val
         self.left = None
         self.right = None
 
+def insert(node, val):
+    if not node:
+        return Node(val)
+    
+    if val < node.val:
+        node.left = insert(node.left, val)
+    else:
+        node.right = insert(node.right, val)
+    return node
 
-class BST:
-    def __init__(self):
-        self.root = None
+def search(node, val):
+    if not node:
+        return False
+        
+    if val == node.val:
+        return True
 
-    def insert(self, val: int):
-        def _insert(node: Node, val: int) -> Node:
-            if not node:
-                return Node(val)
+    if val < node.val:
+        return search(node.left, val)
+    else:
+        return search(node.right, val)
 
-            if val < node.val:
-                node.left = _insert(node.left, val)
-            else:  # duplicates go right
-                node.right = _insert(node.right, val)
+def delete(root, val):
+    if not root:
+        return None
+    
+    if val < root.val:
+        root.left = delete(root.left, val)
+    elif val > root.val:
+        root.right = delete(root.right, val)
+    else:
+        if not root.left:
+            return root.right
+        elif not root.right:
+            return root.left
 
-            return node
+        temp = find_min(root.right)
 
-        self.root = _insert(self.root, val)
+        root.val = temp.val
 
-    def search(self, val: int) -> bool:
-        def _search(node: Node, val: int) -> bool:
-            if not node:
-                return False
-            if node.val == val:
-                return True
-            if val < node.val:
-                return _search(node.left, val)
-            return _search(node.right, val)
+        root.right = delete(root.right, temp.val)
+    return root
 
-        return _search(self.root, val)
+def find_min(node):
+    while node.left:
+        node = node.left
+    return node
 
-    def delete(self, val: int):
-        def _delete(node: Node, val: int) -> Node:
-            if not node:
-                return None
 
-            if val < node.val:
-                node.left = _delete(node.left, val)
-            elif val > node.val:
-                node.right = _delete(node.right, val)
-            else:
-                # No child or one child
-                if not node.left:
-                    return node.right
-                if not node.right:
-                    return node.left
+# --- Test ---
+root = None
+for x in [50, 30, 70, 20, 40]:
+    root = insert(root, x)
 
-                # Two children
-                successor = self._min_value_node(node.right)
-                node.val = successor.val
-                node.right = _delete(node.right, successor.val)
-
-            return node
-
-        self.root = _delete(self.root, val)
-
-    def _min_value_node(self, node: Node) -> Node:
-        curr = node
-        while curr.left:
-            curr = curr.left
-        return curr
+print(search(root, 20))   # True
+print(search(root, 99))   # False
+root = delete(root, 30)
+print(search(root, 30))   # False
