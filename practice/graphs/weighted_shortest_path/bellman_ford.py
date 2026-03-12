@@ -53,12 +53,6 @@ def bellman_ford(n, flights, src, dst, k):
         
         return prices[dst]
 
-
-            
-
-
-
-
 # There are n airports, labeled from 0 to n - 1, which are connected by some flights. 
 # You are given an array flights where flights[i] = [from_i, to_i, price_i] represents 
 # a one-way flight from airport from_i to airport to_i with cost price_i. You may assume 

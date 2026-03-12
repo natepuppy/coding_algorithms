@@ -1,5 +1,7 @@
 from collections import defaultdict
 
+# Use when you have a strict set of prerequisites and need
+# to find a valid chronological order to complete them.
 def topologicalSort(num_courses, prereqs):
     graph = defaultdict(lambda: [])
     for course, prereq in prereqs:

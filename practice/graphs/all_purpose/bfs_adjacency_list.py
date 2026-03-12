@@ -1,6 +1,8 @@
 from collections import deque
 from collections import defaultdict
 
+
+# Used for shortest path when NOT weighted
 def solution(edges):
     adj_list = defaultdict(list)
     for start, end in edges:
@@ -18,6 +20,7 @@ def solution(edges):
     while queue:
         element = queue.popleft()
 
+        # Target found! Reconstruct the path backwards
         if element == "D":
             result = [element]
 

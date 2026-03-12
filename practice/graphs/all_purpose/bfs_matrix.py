@@ -17,7 +17,7 @@ def bfs(grid):
     grid[0][0] = 1 # DONT forget the visited
 
     while queue:
-        for i in range(len(queue)):
+        for i in range(len(queue)): # This is for counting each level I traverse
             current_cell = queue.popleft()
 
             if current_cell[0] == ROWS - 1 and current_cell[1] == COLS - 1:
@@ -32,7 +32,7 @@ def bfs(grid):
                     queue.append([dr, dc])
         
         length += 1
-        
+    
     return -1
 
 # Matrix (2D Grid)
