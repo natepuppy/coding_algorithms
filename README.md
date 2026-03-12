@@ -5,6 +5,6 @@ TODO:
 - dp problems
   - lcs
   - palindromes
-- sorts
-  - merge
-  - quick
+
+
+

@@ -1,5 +1,8 @@
 from disjoint_set import DisjointSet
 
+
+# Use for Sparse Graphs
+# Use these when you want to connect all nodes together with the absolute minimum total edge weight
 def minimumSpanningTree(edges, n):
     edges.sort(key=lambda x: x[2])
     

@@ -14,7 +14,7 @@ class UnionFind:
         for i in range(n):
             self.parent[i + 1] = i + 1
             self.rank[i + 1] = 0
-    
+
     # Find - finds the root parent
     def find(self, n):
         if self.parent[n] == n:
@@ -64,8 +64,26 @@ print(edge_to_remove)
 
 
 
+
+
+
+# Built IN!!!!!!!!!!!!!!!!!!!!
         
 
+from disjoint_set import DisjointSet
+
+ds = DisjointSet()
+
+# It creates elements on the fly as you use them
+ds.union(1, 2)
+ds.union(2, 3)
+
+# Check connectivity
+print(ds.connected(1, 3)) # Output: True
+print(ds.connected(1, 4)) # Output: False
+
+# Find the root
+print(ds.find(1))
 
 
 

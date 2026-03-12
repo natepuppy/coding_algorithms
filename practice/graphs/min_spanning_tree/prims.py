@@ -1,6 +1,8 @@
 import heapq
 from collections import defaultdict
 
+# Use for Dense Graphs
+# Use these when you want to connect all nodes together with the absolute minimum total edge weight
 def minimumSpanningTree(edges, n):
     if len(edges) == 0:
         return [], 0

@@ -1,6 +1,9 @@
 from collections import defaultdict
 import heapq
 
+
+# Use when finding the shortest path from one starting node to 
+# all other nodes in a graph with non-negative edge weights.
 def shortestPath(edges, n, src):
     graph = defaultdict(list)
     for start, end, distance in edges:

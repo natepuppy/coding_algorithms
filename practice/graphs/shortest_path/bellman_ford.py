@@ -4,6 +4,8 @@ from collections import deque
 # In a graph with a negative cycle, the concept of a "shortest path" 
 # doesn't exist unless you have a constraint of k.
 
+# Use when finding the shortest path from one node to 
+# all others when the graph has negative edge weights
 def bellman_ford_bfs_version(n, flights, src, dst, k):
         graph = defaultdict(list)
         for u, v, w in flights:
