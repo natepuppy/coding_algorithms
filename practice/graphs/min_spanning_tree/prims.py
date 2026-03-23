@@ -16,9 +16,9 @@ def minimumSpanningTree(edges, n):
     mst = []
     total_weight = 0
 
-    # weight, start, end
+    
     start = edges[0][0]
-    queue = [(0, None, start)]
+    queue = [(0, None, start)] # weight, start, end
 
     while queue and len(visited) < n: # Do both conditions here
         weight, parent, child = heapq.heappop(queue) # treat is like a parent-child relationship

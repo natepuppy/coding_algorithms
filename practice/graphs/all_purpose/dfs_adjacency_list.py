@@ -12,7 +12,7 @@ def solution(edges, start_node, end_node):
 
     visited = set() # Handle cycles
 
-    def dfs(node, path):
+    def dfs(node, path): # Pass the path here
         if node == end_node:
             result.append(path.copy())
             return
@@ -25,7 +25,7 @@ def solution(edges, start_node, end_node):
                 dfs(neighbor, path)
                 path.pop()
         
-        visited.remove(node)
+        visited.remove(node) # Dont forget to remove it
     
     dfs(start_node, [start_node])
 

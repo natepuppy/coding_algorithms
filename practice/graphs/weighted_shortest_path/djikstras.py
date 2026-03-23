@@ -8,12 +8,15 @@ def shortestPath(edges, n, src):
     graph = defaultdict(list)
     for start, end, distance in edges:
         graph[start].append((distance, end))
-    
-    queue = [(0, src)]
 
     # distances = defaultdict(lambda: float("inf"))
-    distances = {i: float("inf") for i in range(1, n + 1)}
+    distances = {}
+    for i in range(1, n + 1):
+        distances[i] = float("inf")
+
     distances[src] = 0 # Update src distance to start
+
+    queue = [(0, src)]
 
     while queue:
         curr_dist, curr_node = heapq.heappop(queue)
@@ -29,6 +32,9 @@ def shortestPath(edges, n, src):
                 heapq.heappush(queue, (new_total_dist, neighbor_node))
     
     return distances
+
+# Important Note: I need both if statements because there might have been 
+# something in the queue, and while it was in the queue we found a shorter path
 
 # From node 1, find the shortest path to every other node
 edges = [

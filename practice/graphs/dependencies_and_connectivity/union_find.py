@@ -6,7 +6,6 @@
 # Input: edges = [[1,2],[1,3],[3,4],[2,4]]
 # Output: [2,4]
 
-
 # When to use: You need to rapidly group nodes into distinct sets, 
 # merge those sets together, or check if two nodes belong to the 
 # same group. It is incredibly efficient for detecting cycles in 
