@@ -1,45 +1,54 @@
-import bisect
-
-arr = [1, 3, 5, 7, 9, 11]
+arr = [1, 3, 5, 7, 7, 7, 9, 11]
 target = 7
 
-# Built in way:
+import bisect
 
-idx = bisect.bisect_left(arr, target)
+# This results in 6 - Not 5!!!! Which is the first index that this element could be inserted at
+result_id = bisect.bisect_right(arr, target) # Note: arr, target - NOT (target, arr)
+print(result_id)
 
-if idx < len(arr) and arr[idx] == target:
-    print(f"Found {target} at index {idx}")
-else:
-    print("Not found")
+# Also results in 6
+result_id = bisect.bisect_left(arr, 8)
+print(result_id)
+
+# Results in 3
+result_id = bisect.bisect_left(arr, target)
+print(result_id)
 
 
-# OR custom way:
-
+# OR the custom way:
 def binary_search(arr, target):
-    low = 0
-    high = len(arr) - 1
+    L, R = 0, len(arr) - 1 # Dont forget the minus one here
 
-    while low <= high:
-        mid = (low + high) // 2
-        
-        if arr[mid] == target:
-            return mid
-        elif arr[mid] < target:
-            low = mid + 1
-        else:
-            high = mid - 1
-            
-    return -1
+    while L <= R:
+        m = (L + R) // 2
 
-# OR for a range of numbers:
+        if target == arr[m]:
+            return m
 
-r = range(0, 1000000, 2)
+            # If I want to get the first occurence of 7. I need to add result = -1 above
+            # Then do this here instead of returning
+            # result = m      # Record the match...
+            # R = m - 1       # ...but keep looking to the LEFT!
 
-# This is instant, regardless of how large the range is
-if 500250 in r:
-    print("Found!")
+        if target < arr[m]: # Compare to arr[m], NOT m
+            R = m - 1
+
+        if target > arr[m]:
+            L = m + 1
+    
+    return -1 # Dont forget to return -1 here
 
 print(binary_search(arr, target))
+
+
+# Search for even numbers in the range of 0, 10,000
+r = range(0, 10000, 2)
+
+if 122 in r:
+    print("Found")
+else:
+    print("Not Found")
 
 
 

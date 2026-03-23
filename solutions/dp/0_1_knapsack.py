@@ -4,109 +4,81 @@
 # is profit[i] and it's weight is weight[i]. Assume you can
 # only add each item to the bag at most one time. 
 
-# Brute force Solution
-# Time: O(2^n), Space: O(n)
-# Where n is the number of items.
-def dfs(profit, weight, capacity):
-    return dfsHelper(0, profit, weight, capacity)
+def top_down(profits, weights, cap):
+    dp = {}
 
-def dfsHelper(i, profit, weight, capacity):
-    if i == len(profit):
-        return 0
+    def dfs(index, remaining_cap):
+        if index == len(profits) or remaining_cap <= 0:
+            return 0
+        
+        if (index, remaining_cap) in dp:
+            return dp[(index, remaining_cap)]
+        
+        # Dont add it
+        profit = dfs(index + 1, remaining_cap)
 
-    # Skip item i
-    maxProfit = dfsHelper(i + 1, profit, weight, capacity)
+        # If it can fit, add it
+        if weights[index] <= remaining_cap:
+            res = profits[index] + dfs(index + 1, remaining_cap - weights[index])
+            profit = max(profit, res)
 
-    # Include item i
-    newCap = capacity - weight[i]
-    if newCap >= 0:
-        p = profit[i] + dfsHelper(i + 1, profit, weight, newCap)
-        # Compute the max
-        maxProfit = max(maxProfit, p)
+        dp[(index, remaining_cap)] = profit
 
-    return maxProfit
+        return profit
 
+    return dfs(0, capacity)
 
-# Memoization Solution
-# Time: O(n * m), Space: O(n * m)
-# Where n is the number of items & m is the capacity.
-def memoization(profit, weight, capacity):
-    # A 2d array, with N rows and M + 1 columns, init with -1's
-    N, M = len(profit), capacity
-    cache = [[-1] * (M + 1) for _ in range(N)]
-    return memoHelper(0, profit, weight, capacity, cache)
+# BASE CASE ILLUSTRATION
+# The first row and first column stay 0 to represent "No Items" or "No Capacity".
+#
+# [
+#  Col: 0  1  2  3  4  5  6  7  8   (Capacity)
+#     [ 0, 0, 0, 0, 0, 0, 0, 0, 0 ], # Row 0: Dummy/Base Case
+#     [ 0, ., ., ., ., ., ., ., . ], # Row 1: Item 1
+#     [ 0, ., ., ., ., ., ., ., . ], # Row 2: Item 2
+#     [ 0, ., ., ., ., ., ., ., . ], # Row 3: Item 3
+#     [ 0, ., ., ., ., ., ., ., . ]  # Row 4: Item 4
+# ]
+# 
+# [
+#     [0, 0, 0, 0, 0,  0,  0,  0,  0], 
+#     [0, 0, 0, 0, 0,  4,  4,  4,  4], 
+#     [0, 0, 4, 4, 4,  4,  4,  8,  8], 
+#     [0, 0, 4, 7, 7, 11, 11, 11, 11], 
+#     [0, 1, 4, 7, 8, 11, 12, 12, 12]
+# ]
+# 
+# [
+#     [0, 0, 0, 0, 0,  0,  0,  0,  0], 
+#     [0, 0, 0, 0, 0,  4,  4,  4,  4], 
+#     [0, 0, 4, 4, 4,  4,  4,  8,  8], 
+#     [0, 0, 4, 7, 7, 11, 11, 11, 11], 
+#     [0, 1, 4, 7, 8, 11, 12, 12, 12]
+# ]
+def bottom_up(profits, weights, cap):
+    ROWS, COLS = len(weights) + 1, cap + 1
+    dp = [[0] * COLS for _ in range(ROWS)]
 
-def memoHelper(i, profit, weight, capacity, cache):
-    if i == len(profit):
-        return 0
-    if cache[i][capacity] != -1:
-        return cache[i][capacity]
+    for r in range(1, ROWS):
+        current_weight = weights[r - 1]
+        current_profit = profits[r - 1]
 
-    # Skip item i
-    cache[i][capacity] = memoHelper(i + 1, profit, weight, capacity, cache)
-    
-    # Include item i
-    newCap = capacity - weight[i]
-    if newCap >= 0:
-        p = profit[i] + memoHelper(i + 1, profit, weight, newCap, cache)
-        # Compute the max
-        cache[i][capacity] = max(cache[i][capacity], p)
+        for c in range(1, COLS):
+            skip = dp[r - 1][c]
 
-    return cache[i][capacity]
-
-
-# Dynamic Programming Solution
-# Time: O(n * m), Space: O(n * m)
-# Where n is the number of items & m is the capacity.
-def dp(profit, weight, capacity):
-    N, M = len(profit), capacity
-    dp = [[0] * (M + 1) for _ in range(N)]
-
-    # Fill the first column and row to reduce edge cases
-    for i in range(N):
-        dp[i][0] = 0
-    for c in range(M + 1):
-        if weight[0] <= c:
-            dp[0][c] = profit[0] 
-
-    for i in range(1, N):
-        for c in range(1, M + 1):
-            skip = dp[i-1][c]
             include = 0
-            if c - weight[i] >= 0:
-                include = profit[i] + dp[i-1][c - weight[i]]
-            dp[i][c] = max(include, skip)
-    return dp[N-1][M]
+            if c - current_weight >= 0:
+                # LOOK UP ONE ROW!!
+                # Look left the distance of current_weight
+                include = current_profit + dp[r - 1][c - current_weight]
+            
+            dp[r][c] = max(skip, include)
 
+    return dp[ROWS - 1][COLS - 1]
 
-# Memory optimized Dynamic Programming Solution
-# Time: O(n * m), Space: O(m)
-def optimizedDp(profit, weight, capacity):
-    N, M = len(profit), capacity
-    dp = [0] * (M + 1)
+profits = [4, 4, 7, 1]
+weights = [5, 2, 3, 1]
+capacity = 8
 
-    # Fill the first row to reduce edge cases
-    for c in range(M + 1):
-        if weight[0] <= c:
-            dp[c] = profit[0] 
-
-    for i in range(1, N):
-        curRow = [0] * (M + 1)
-        for c in range(1, M + 1):
-            skip = dp[c]
-            include = 0
-            if c - weight[i] >= 0:
-                include = profit[i] + dp[c - weight[i]]
-            curRow[c] = max(include, skip)
-        dp = curRow
-    return dp[M]
-
-
-profits = [1, 6, 10, 16]
-weights = [1, 2, 3, 5]
-capacity = 7
-
-print(dfs(profits, weights, capacity))
-print(memoization(profits, weights, capacity))
-print(dp(profits, weights, capacity))
-print(optimizedDp(profits, weights, capacity))
+print(top_down(profits, weights, capacity))
+print(bottom_up(profits, weights, capacity))
