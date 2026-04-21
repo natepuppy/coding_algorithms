@@ -3,47 +3,7 @@
 
 # !!! Inserting just a 3 letter word will result in 4 total nodes
 
-class TrieNode:
-    def __init__(self, is_word=False):
-        self.is_word = is_word
-        self.children = {}
 
-class Trie:
-    def __init__(self):
-        self.root = TrieNode()
-    
-    def insert(self, word):
-        node = self.root
-
-        for char in word:
-            if char not in node.children:
-                node.children[char] = TrieNode()
-            node = node.children[char]
-        
-        if node.is_word: return False
-
-        node.is_word = True
-        return True
-    
-    def starts_with(self, prefix):
-        node = self.root
-
-        for char in prefix:
-            if char not in node.children:
-                return False
-            node = node.children[char]
-        
-        return True
-
-    def search(self, word):
-        node = self.root
-
-        for char in word:
-            if char not in node.children:
-                return False
-            node = node.children[char]
-        
-        return node.is_word
 
 
 trie = Trie()

@@ -11,42 +11,31 @@
 
 # Output: [[], [1], [2], [1, 2], [3], [1, 3], [2, 3], [1, 2, 3]]
 
-# Two branch recursion
-def subsets1(nums):
-    result = []
+# O(2^n)
 
-    def dfs(index, subset):
-        if index == len(nums):
-            result.append(subset.copy())
-            return
+class Solution:
+    def sub(self, nums):
+        n = len(nums)
+        result = []
+        nums.sort() # Dont forget sort
 
-        subset.append(nums[index])
-        dfs(index + 1, subset)
-        subset.pop()
+        def dfs(index, arr):
+            # no base case needed
+            result.append(arr.copy()) # Dont forget copy
 
-        dfs(index + 1, subset)
+            for i in range(index, n):
+                if i > index and nums[i] == nums[i - 1]: # If not while
+                    continue
 
-    dfs(0, [])
-    return result
+                arr.append(nums[i])
+                dfs(i + 1, arr)
+                arr.pop()
 
-# multi-branch recursion
-# With duplicate skipping
-def subsets2(nums):
-    result = []
+        dfs(0, [])
 
-    def dfs(index, subset):
-        result.append(subset.copy())
+        return result
 
-        for i in range(index, len(nums)):
-            if i > index and nums[i] == nums[i - 1]:
-                continue
-            subset.append(nums[i])
-            dfs(i + 1, subset)
-            subset.pop()
+        
 
-    dfs(0, [])
-    return result
-
-nums = [1, 1, 2, 3]
-print(subsets1(nums))
-print(subsets2(nums))
+nums = [1, 2, 3]
+print(Solution().sub(nums))

@@ -1,47 +1,38 @@
-import heapq
 from collections import defaultdict
+import heapq
 
-# Use for Dense Graphs
-# Use these when you want to connect all nodes together with the absolute minimum total edge weight
+# Used to find MST on UNDIRECTED, WEIGHTED, and CONNECTED graphs
 def minimumSpanningTree(edges, n):
-    if len(edges) == 0:
-        return [], 0
-
-    graph = defaultdict(list)
-    for start, end, weight in edges:
-        graph[start].append((weight, end))
-        graph[end].append((weight, start))
-
-    visited = set()
-    mst = []
-    total_weight = 0
-
+    if not edges:
+        return 0
     
-    start = edges[0][0]
-    queue = [(0, None, start)] # weight, start, end
-
-    while queue and len(visited) < n: # Do both conditions here
-        weight, parent, child = heapq.heappop(queue) # treat is like a parent-child relationship
-
-        # CRITICAL: Similar to Djikstra's, we need to do this because 
-        # a single node could be added to the heap multiple times. So 
-        # if we already found an optimal solution, we don't want to 
-        # revisit this node, that is why we have to check if it is in 
-        # visited twice.
-        if child in visited:
+    graph = defaultdict(list)
+    for u, v, w in edges:
+        graph[u].append((w, v))
+        graph[v].append((w, u))
+    
+    # Heap Format: (weight, target_node)
+    heap = [(0, edges[0][0])]
+    visited = set()
+    total_cost = 0
+    
+    while heap and len(visited) < n:
+        weight, u = heapq.heappop(heap)
+        
+        if u in visited:
             continue
+        
+        visited.add(u)
+        total_cost += weight
+        
+        for next_weight, v in graph[u]:
+            if v not in visited:
+                heapq.heappush(heap, (next_weight, v))
 
-        visited.add(child)
-
-        if parent is not None:
-            mst.append((parent, child))
-            total_weight += weight
-
-        for new_weight, new_child in graph[child]:
-            if new_child not in visited:
-                heapq.heappush(queue, (new_weight, child, new_child))
-
-    return mst, total_weight
+    if len(visited) == n:
+        return total_cost
+    else:
+        return -1
 
 # -------- RUN IT --------
 

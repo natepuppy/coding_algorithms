@@ -1,34 +1,93 @@
-arr = [1, 3, 5, 7, 7, 7, 9, 11]
+nums = [1, 7, 7, 7, 7, 7, 7, 11]
 target = 7
 
+# Given a sorted array of integers. Find the leftmost/rightmost occurence 
+# if target, if target does not exist, return the index where it 
+# would be inserted
+
+class Solution:
+    def binary_search(self, nums, target):
+        # R starts at len(nums) to allow insertion at the very end!!!!!!!!!!
+        n = len(nums)
+        L, R = 0, n
+
+        while L < R:
+            M = (L + R) // 2
+
+            if nums[M] < target:
+                L = M + 1
+            else:
+                R = M
+
+        return L
+    
+class Solution:
+    def binary_search_right(self, nums, target):
+        n = len(nums)
+        L, R = 0, n
+
+        while L < R:
+            M = (L + R) // 2
+
+            if nums[M] <= target:
+                L = M + 1
+            else:
+                R = M
+
+        return L  # this is first index > target
+
+print(Solution().binary_search_left(nums, target))
+print(Solution().binary_search_right(nums, target))
+
+
 import bisect
-
-# This results in 6 - Not 5!!!! Which is the first index that this element could be inserted at
-result_id = bisect.bisect_right(arr, target) # Note: arr, target - NOT (target, arr)
-print(result_id)
-
-# Also results in 6
-result_id = bisect.bisect_left(arr, 8)
-print(result_id)
-
-# Results in 3
-result_id = bisect.bisect_left(arr, target)
-print(result_id)
+# Note: nums, target - NOT (target, nums)
+print(bisect.bisect_left(nums, target))  # Result: 1
+print(bisect.bisect_right(nums, target)) # Result: 2 -- Which is the first index that this element could be inserted at
 
 
+# Find element in rotated sorted array of integers
 
+nums = [7, 9, 11, -1, 0, 0, 1, 3, 5, 7, 7]
+target = 3
 
+class Solution:
+    def binary_search(self, nums, target):
+        L, R = 0, len(nums) - 1
 
+        while L <= R:
+            M = (L + R) // 2
 
+            if nums[M] == target:
+                return M
+            
+            # This handles duplicates:
+            # EX: [1, 0, 1, 1, 1]
+            if nums[L] == nums[M] == nums[R]:
+                L += 1
+                R -= 1
+                continue
 
+            if nums[M] < nums[R]: # right it sorted
+                if nums[M] < target <= nums[R]:
+                    L = M + 1
+                else:
+                    R = M - 1
+            else: # left is sorted
+                if nums[L] <= target < nums[M]:
+                    R = M - 1
+                else:
+                    L = M + 1
+        
+        return -1 # 
 
+print(Solution().binary_search(nums, target))
 
-
-
-print(binary_search(arr, target))
 
 
 # Search for even numbers in the range of 0, 10,000
+# This is O(1) for both time and space
+
 r = range(0, 10000, 2)
 
 if 122 in r:

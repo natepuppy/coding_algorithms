@@ -1,44 +1,42 @@
 from collections import deque
-
 # Length of shortest path from top left to bottom right
-def bfs(grid):
-    length = 0
 
-    ROWS, COLS = len(grid), len(grid[0])
+class Solution:
+    def bfs(self, grid):
+        if not grid or not grid[0] or grid[0][0] != 1:
+            return -1
 
-    if ROWS == 0 or COLS == 0 or grid[0][0] == 1:
+        ROWS, COLS = len(grid), len(grid[0])
+        directions = [[1,0],[-1,0],[0,1],[0,-1]]
+        queue = deque()
+        count = 0 # set count=1 if I want to count the number of nodes
+
+        queue.append((0,0))
+        visited = set()
+        visited.add((0,0)) # Dont forget to add this!!!!!
+
+        while queue:
+            for _ in range(len(queue)): # YOU NEED THIS for counting by level!!!!!
+                r, c = queue.popleft()
+
+                if r == ROWS - 1 and c == COLS - 1:
+                    return count
+
+                for dr, dc in directions:
+                    nr, nc = dr + r, dc + c
+
+                    if 0 <= nr < ROWS and 0 <= nc < COLS and (nr, nc) not in visited and grid[nr][nc] == 1:
+                        queue.append((nr, nc))
+                        visited.add((nr, nc))
+                
+            count += 1
+
         return -1
 
-    queue = deque()
-    queue.append([0,0])
-
-    neighbors = [[1,0], [-1,0], [0,1], [0,-1]] # optimize directions
-
-    grid[0][0] = 1 # DONT forget the visited
-
-    while queue:
-        for i in range(len(queue)): # This is for counting each level I traverse
-            current_cell = queue.popleft()
-
-            if current_cell[0] == ROWS - 1 and current_cell[1] == COLS - 1:
-                return length
-            
-            for r, c in neighbors:
-                dr = current_cell[0] + r
-                dc = current_cell[1] + c
-
-                if not(dr >= ROWS or dr < 0 or dc >= COLS or dc < 0 or grid[dr][dc] == 1):
-                    grid[dr][dc] = 1 # DONT forget the visited
-                    queue.append([dr, dc])
-        
-        length += 1
-    
-    return -1
-
 # Matrix (2D Grid)
-grid = [[0, 0, 0, 0],
+grid = [[1, 1, 1, 0],
         [1, 1, 0, 0],
-        [0, 0, 0, 1],
-        [0, 1, 0, 0]]
+        [0, 1, 0, 1],
+        [0, 1, 1, 1]]
 
-print(bfs(grid))
+print(Solution().bfs(grid))

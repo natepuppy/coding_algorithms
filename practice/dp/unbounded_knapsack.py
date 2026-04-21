@@ -12,4 +12,3 @@ capacity = 8
 
 print(top_down(profits, weights, capacity))
 print(bottom_up(profits, weights, capacity))
-

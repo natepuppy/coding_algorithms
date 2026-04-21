@@ -12,22 +12,37 @@
 #   [3,2,1]
 # ]
 
-def permutations(nums):
-    result = []
+# O(n!)
 
-    def dfs(index):
-        if index == len(nums) - 1:
-            result.append(nums.copy())
-            return
+class Solution:
+    def perm(self, nums):
+        result = []
+        n = len(nums)
+
+        # Only one Param!!!
+        def dfs(index):
+            if index == n:
+                result.append(nums.copy())
+                return
+
+            visited = set()
+            
+            for i in range(index, n):
+                if nums[i] in visited:
+                    continue
+
+                visited.add(nums[i]) # Make sure to do this first before you switch everything
+                    
+                nums[i], nums[index] = nums[index], nums[i]
+                dfs(index + 1)
+                nums[i], nums[index] = nums[index], nums[i]
+                
+
+        dfs(0)
+
+        return result
+
         
-        for i in range(index, len(nums)):
-            nums[index], nums[i] = nums[i], nums[index] # Swap the numbers
-            dfs(index + 1)
-            nums[index], nums[i] = nums[i], nums[index]
-
-    dfs(0)
-    
-    return result
 
 nums = [1,2,3]
-print(permutations(nums))
+print(Solution().perm(nums))

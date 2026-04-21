@@ -1,25 +1,29 @@
-def quick_sort(arr, L, R):
-    if L >= R:
-        return arr
+def quick_sort(nums):
+    if not nums:
+        return nums
     
-    pivot_val = arr[R]
-    pivot_index = L # Pointing to the first value that is greater than the pivot
+    def sort(L, R):
+        if L >= R:
+            return
+        
+        pivot_val = nums[R]
+        pivot = L
 
-    for i in range(L, R):
-        if arr[i] < pivot_val:
-            arr[pivot_index], arr[i] = arr[i], arr[pivot_index]
-            pivot_index += 1
+        for i in range(L, R):
+            if nums[i] <= pivot_val:
+                nums[i], nums[pivot] = nums[pivot], nums[i]
+                pivot += 1
+
+        # place pivot in final correct position!!!!!!!!!!!!!!!!
+        nums[pivot], nums[R] = nums[R], nums[pivot]
+        
+        sort(L, pivot - 1)
+        sort(pivot + 1, R)
     
-    # DONT forget this - This moves the pivot element into the correct position
-    # Then we dont have to worry about sorting this element anymore, so we can just sort:
-    # (L, pivot_index - 1) and (pivot_index + 1, R)
-    arr[pivot_index], arr[R] = arr[R], arr[pivot_index]
+    L, R = 0, len(nums) - 1
+    sort(L, R)
 
-    quick_sort(arr, L, pivot_index - 1)
-    quick_sort(arr, pivot_index + 1, R)
-
-    return arr
-
-arr = [1, 1, 4, 6, 1, 3]
-L, R =  0, len(arr) - 1
-print(quick_sort(arr, L, R))
+    return nums
+    
+nums = [1, 1, 4, 6, 1, 3]
+print(quick_sort(nums))

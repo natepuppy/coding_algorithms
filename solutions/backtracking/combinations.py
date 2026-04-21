@@ -2,35 +2,41 @@
 # Each element may be used at most once.
 # The result must not contain duplicate combinations.
 
-def combinationSum2(nums, k):
-    nums.sort()
-    result = []
+# Can input have negatives?
 
-    def dfs(index, curr_nums, curr_sum):
-        if curr_sum > k:
-            return
+# O(n choose k) or 2^n
 
-        if curr_sum == k:
-            result.append(curr_nums.copy())
-            return
+class Solution:
+    def comb(self, nums, k):
+        result = []
+        nums.sort()
 
-        for i in range(index, len(nums)):
-            if i > index and nums[i] == nums[i - 1]:
-                continue
+        # Note: pass curr_sum -- sum(arr) is a O(n) operation
+        def dfs(index, curr_sum, arr):
+            if curr_sum == k:
+                result.append(arr.copy())
+                # return # Removing this allows it to work for negatives
 
-            curr_nums.append(nums[i])
-            curr_sum += nums[i]
+            for i in range(index, len(nums)):
+                if i > index and nums[i] == nums[i - 1]:
+                    continue
 
-            dfs(i + 1, curr_nums, curr_sum)
+                new_sum = curr_sum + nums[i]
 
-            curr_sum -= nums[i]
-            curr_nums.pop()
+                # Filter out here for better efficiency
+                # if new_sum > k: # Removing this allows it to work for negatives
+                #     break
 
-    dfs(0, [], 0)
-    return result
+                arr.append(nums[i])
+                dfs(i + 1, new_sum, arr)
+                arr.pop()
+
+        dfs(0, 0, [])
+
+        return result
+
 
 nums = [1, 2, 3, 1, 6, 4]
-# nums = [1,1,2,3,4]
 k = 7
 
-print(combinationSum2(nums, k))
+print(Solution().comb(nums, k))
