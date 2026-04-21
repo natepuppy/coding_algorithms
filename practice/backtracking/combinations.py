@@ -15,7 +15,7 @@ class Solution:
         nums.sort()
         result = []
 
-        def dfs(index, curr_sum, curr_arr):
+        def dfs(index, curr_sum, curr_arr): # Three params
             if curr_sum == k:
                 result.append(curr_arr.copy())
                 return # Remove for negatives...
