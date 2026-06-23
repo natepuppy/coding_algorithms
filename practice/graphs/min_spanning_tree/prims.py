@@ -3,42 +3,48 @@ import heapq
 
 # Used to find MST on UNDIRECTED, WEIGHTED, and CONNECTED graphs
 def minimumSpanningTree(edges, n):
+    if n <= 1:
+        return [0, []]
     if not edges:
-        return []
+        return None
     
     graph = defaultdict(list)
     for u, v, w in edges:
         graph[u].append((w, v))
         graph[v].append((w, u))
     
-    src = edges[0][0]
-
-    heap = []
+    start_node = edges[0][0]
     mst = []
-    visited = set()
-    visited.add(src)
+    heap = []
+    total_weight = 0
+    
+    visited = set() # You need a visited set
+    visited.add(start_node)
 
-    for w, v in graph[src]:
-        heapq.heappush(heap, (w, src, v))
+    for weight, node in graph[start_node]:
+        heapq.heappush(heap, (weight, start_node, node))
     
     while heap:
-        w, u, v = heapq.heappop(heap)
+        weight, src, dest = heapq.heappop(heap)
 
-        if v in visited: # Dont forget this!!!!!
+        if dest in visited: # Two visited checks
             continue
 
-        mst.append((u, v))
+        # Do these first!!!!!
+        mst.append((src, dest, weight))
+        visited.add(dest)
+        total_weight += weight
 
         if len(visited) == n: # Dont forget this!!!!!
-            return mst
+            return [total_weight, mst]
 
-        for weight, neighbor in graph[v]:
-            if neighbor not in visited:
-                heapq.heappush(heap, (weight, v, neighbor))
+        for w, neighbor in graph[dest]:
+            if neighbor not in visited: # Two visited checks
+                heapq.heappush(heap, (w, dest, neighbor))
+    
+    return [0, []] # if the graph wasn't connected
 
-        visited.add(v)
 
-    return mst
 
         
 
@@ -89,80 +95,39 @@ print(minimumSpanningTree(edges, 4))
 
 
 
-    # if not edges:
-    #     return -1
-
+    #  if not edges:
+    #     return []
+    
     # graph = defaultdict(list)
     # for u, v, w in edges:
     #     graph[u].append((w, v))
     #     graph[v].append((w, u))
     
+    # src = edges[0][0]
+
     # heap = []
+    # mst = []
     # visited = set()
-    # start_node = edges[0][0]
-    # visited.add(start_node)
+    # visited.add(src)
 
-    # for w, v in graph[start_node]:
-    #     heapq.heappush(heap, (w, v))
-
-    # total = 0
-
+    # for w, v in graph[src]:
+    #     heapq.heappush(heap, (w, src, v))
+    
     # while heap:
-    #     weight, node = heapq.heappop(heap)
+    #     w, u, v = heapq.heappop(heap)
 
-    #     if node in visited:
+    #     if v in visited: # Dont forget this!!!!!
     #         continue
 
-    #     visited.add(node)
-    #     total += weight
+    #     mst.append((u, v))
 
     #     if len(visited) == n: # Dont forget this!!!!!
-    #         return total
+    #         return mst
 
-    #     for w, v in graph[node]:
-    #         if v not in visited:
-    #             heapq.heappush(heap, (w, v))
+    #     for weight, neighbor in graph[v]:
+    #         if neighbor not in visited:
+    #             heapq.heappush(heap, (weight, v, neighbor))
 
-    # return -1
+    #     visited.add(v)
 
-
-
-
-
-
-
-
-
-    # if not edges:
-    #     return 0
-    
-    # graph = defaultdict(list)
-    # for u, v, w in edges:
-    #     graph[u].append((w, v))
-    #     graph[v].append((w, u))
-    
-    # # Heap Format: (weight, target_node)
-    # heap = [(0, edges[0][0])]
-    # visited = set()
-    # total_cost = 0
-    
-    # while heap and len(visited) < n:
-    #     weight, u = heapq.heappop(heap)
-        
-    #     if u in visited:
-    #         continue
-        
-    #     visited.add(u)
-    #     total_cost += weight
-        
-    #     for next_weight, v in graph[u]:
-    #         if v not in visited:
-    #             heapq.heappush(heap, (next_weight, v))
-
-    # if len(visited) == n:
-    #     return total_cost
-    # else:
-    #     return -1
-
-
-
+    # return mst

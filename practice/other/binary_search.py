@@ -5,45 +5,44 @@ target = 7
 # if target, if target does not exist, return the index where it 
 # would be inserted
 
-class Solution:
-    def binary_search(self, nums, target):
-        # R starts at len(nums) to allow insertion at the very end!!!!!!!!!!
-        n = len(nums)
-        L, R = 0, n
-
-        while L < R:
-            M = (L + R) // 2
-
-            if nums[M] < target:
-                L = M + 1
-            else:
-                R = M
-
-        return L
+def binary_search_left(nums, target):
+    if not nums:
+        return 0
     
-class Solution:
-    def binary_search_right(self, nums, target):
-        n = len(nums)
-        L, R = 0, n
+    n = len(nums)
+    L, R = 0, n
 
-        while L < R:
-            M = (L + R) // 2
+    while L < R:
+        M = (L + R) // 2
 
-            if nums[M] <= target:
-                L = M + 1
-            else:
-                R = M
+        if nums[M] < target:
+            L = M + 1
+        else:
+            R = M
+    
+    return L
+            
+def binary_search_right(nums, target):
+    if not nums:
+        return 0
+    
+    n = len(nums)
+    L, R = 0, n
 
-        return L  # this is first index > target
+    while L < R:
+        M = (L + R) // 2
 
-print(Solution().binary_search_left(nums, target))
-print(Solution().binary_search_right(nums, target))
+        if nums[M] <= target:
+            L = M + 1
+        else:
+            R = M
+    
+    return L
 
 
-import bisect
-# Note: nums, target - NOT (target, nums)
-print(bisect.bisect_left(nums, target))  # Result: 1
-print(bisect.bisect_right(nums, target)) # Result: 2 -- Which is the first index that this element could be inserted at
+print(binary_search_left(nums, target))
+print(binary_search_right(nums, target))
+
 
 
 # Find element in rotated sorted array of integers
@@ -83,17 +82,6 @@ class Solution:
 
 print(Solution().binary_search(nums, target))
 
-
-
-# Search for even numbers in the range of 0, 10,000
-# This is O(1) for both time and space
-
-r = range(0, 10000, 2)
-
-if 122 in r:
-    print("Found")
-else:
-    print("Not Found")
 
 
 

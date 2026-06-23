@@ -4,12 +4,12 @@ from collections import defaultdict
 # to find a valid chronological order to complete them.
 def topologicalSort(num_courses, prereqs):
     graph = defaultdict(list)
-    for course, pre in prereqs:
-        graph[course].append(pre)
-    
-    result = []
+    for u, v in prereqs:
+        graph[u].append(v)
+
     visited = set()
     visiting = set()
+    result = []
 
     def dfs(node):
         if node in visiting:
@@ -21,21 +21,21 @@ def topologicalSort(num_courses, prereqs):
 
         for neighbor in graph[node]:
             if not dfs(neighbor):
-                return False # Dont forget this return!!!!!
+                return False
 
-        result.append(node)
         visiting.remove(node)
-        visited.add(node) # This goes after...
+        visited.add(node)
+        result.append(node)
 
         return True
 
+
     for i in range(num_courses):
-        if i not in visited: # Small optimization
+        if i not in visited:
             if not dfs(i):
                 return []
 
-    return result
-
+    return result # Always ask what order to return them in
 
 # Return a valid ordering of courses you can take to finish all courses.
 # [0, 1], indicates that to take course 0 you have to first take course 1.
@@ -49,4 +49,3 @@ prereqs = [[0, 1], [2, 1], [3, 0], [3, 2]]
 print(topologicalSort(num_courses, prereqs))
 # print(kahns(num_courses, prereqs))
 # Output: [1, 3, 2, 4]
-

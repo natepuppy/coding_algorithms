@@ -13,7 +13,7 @@ class Solution:
             if r == ROWS - 1 and c == COLS - 1:
                 return True
 
-            visited.add((r, c)) 
+            visited.add((r, c))
             # NEVER remove from this because it's a "Does a path exist?"
             # problem, not a "Find all paths" problem
 
