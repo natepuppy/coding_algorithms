@@ -1,6 +1,11 @@
 from collections import deque
 # Length of shortest path from top left to bottom right
 
+# Use a global visited set if you should only visit a node once
+# --- Then never remove from it
+# Use a global visiting set if you only want to visit a node once in a path
+# --- Remove it from the set at the bottom of the loop, so it can be used in different paths
+
 class Solution:
     def bfs(self, grid):
         if not grid or not grid[0] or grid[0][0] != 1:

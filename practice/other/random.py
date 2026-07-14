@@ -4,6 +4,25 @@ x = random.randint(1, 10)  # inclusive
 print(x)
 
 
+from functools import cache
+
+@cache  # Exactly identical to @lru_cache(maxsize=None)
+def fibonacci(n):
+    if n < 2: return n
+    return fibonacci(n-1) + fibonacci(n-2)
+
+
+from sortedcontainers import SortedDict
+sorted_map = SortedDict(
+    {
+        'c': 3, 
+        'a': 1, 
+        'b': 2
+    }
+)
+
+print(sorted_map) # Output: {'a': 1, 'b': 2, 'c': 3}
+
 
 # Sort by second element in tuple:
 data = [("apple", 10), ("banana", 5), ("cherry", 8)]
@@ -12,11 +31,12 @@ sorted_data = sorted(data, key=lambda x: x[1])
 points = [(2,3),(4,2),(5,6)]
 points.sort(key=lambda x: x[0]**2 + x[1]**2)
 
+intervals.sort(key=lambda x: (x[0], -x[1]))
 
 
-c = 'A'
-value = ord(c)
-print(value)  # Output: 65
+
+char = 'c'
+index = ord(char) - ord('a') # Output: 2
 
 
 # One liner to create matrix
@@ -37,7 +57,6 @@ str.isspace()
 str.lower()
 
 
-edges.sort(key=lambda x: x[2])
 
 
 # Remember, there are no max heaps...
@@ -45,29 +64,9 @@ import heapq
 result = heapq.nlargest(k, nums)[-1]
 
 
-# bisect.bisect_left(nums, target)
-
-
-# how to loop through a dict with .items()
-
-
-nlargest
-
-
-intervals.sort(key=lambda x: x[0])
-
 
 
 # n & (n - 1) removes the lowest set bit
-
-
-index = ord(char) - ord('a')
-
-
-# Return all the groups as a list of lists
-list(dict.values())
-
-
 
 
 # how to sort a string:
@@ -77,12 +76,7 @@ sorted(s) # outputs "abc"
 
 # a list [1,2,3,4,5] is not hashable for a dict in python. Instead convert it to a tuple:
 tuple(count)
-
-
-
-
-# get int representation of a char:
-ord(char) - ord('a')
+tuple([1, 2, 3, 4, 5]) # Output: (1, 2, 3, 4, 5)
 
 
 
@@ -90,8 +84,7 @@ ord(char) - ord('a')
 
 n = 13
 
-print(countBits(n))
-
+n = -1
 # built in ways:
 print(n.bit_count())
 # OR
@@ -115,9 +108,8 @@ for key in my_dict:
 for value in my_dict.values():
     print(value)
 
-
 # Turn all the values of a hash map into a list
-list(mp.values())
+list(my_dict.values())
 
 
 # Built IN!!!!!!!!!!!!!!!!!!!!
@@ -140,25 +132,25 @@ print(ds.find(1))
 
 
 import bisect
-# Note: nums, target - NOT (target, nums)
+# Note: nums, target - NOT (target, nums)6
 print(bisect.bisect_left(nums, target))  # Result: 1
 print(bisect.bisect_right(nums, target)) # Result: 2 -- Which is the first index that this element could be inserted at
+bisect.insort([1,2,4,5,6], 3) # inserts in sorted order
 
-
+float("inf")
+float("-inf")
 
 # Search for even numbers in the range of 0, 10,000
 # This is O(1) for both time and space
 
-r = range(0, 10000, 2)
+r = range(0, 10000, 7)
 
-if 122 in r:
+if 127 in r:
     print("Found")
 else:
     print("Not Found")
 
 
-
-envelopes.sort(key=lambda x: (x[0], -x[1]))
 
 
 

@@ -26,7 +26,7 @@ def decode(s):
         else:
             string, digit = stack.pop()
             curr_string = string + (curr_string * digit)
-        
+    
     return "".join(curr_string) # Or a seperate result?
 
 s = "ab3[a]2[bc]"

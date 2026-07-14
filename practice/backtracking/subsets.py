@@ -21,7 +21,7 @@ class Solution:
         nums.sort()
         result = []
 
-        def dfs(index, arr):
+        def dfs(index, arr): # Two params
             result.append(arr.copy())
 
             for i in range(index, len(nums)):

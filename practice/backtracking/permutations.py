@@ -23,7 +23,7 @@ class Solution:
         result = []
         n = len(nums)
 
-        def dfs(index): # Note that I DONT need to pass nums here
+        def dfs(index): # One Param
             if index >= n:
                 result.append(nums.copy())
                 return
@@ -44,5 +44,5 @@ class Solution:
 
         return result
 
-nums = [1,2,3]
+nums = [1,2,3, 3]
 print(Solution().perm(nums))

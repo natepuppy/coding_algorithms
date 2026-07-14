@@ -36,10 +36,6 @@ class Solution:
         
         return result
 
-
-
-
-
 nums = [1, 2, 3, 1, 6, 4]
 k = 7
 

@@ -15,7 +15,7 @@ class Solution:
         def dfs(index, curr_sum, arr):
             if curr_sum == k:
                 result.append(arr.copy())
-                # return # Removing this allows it to work for negatives
+                return # Removing this allows it to work for negatives
 
             for i in range(index, len(nums)):
                 if i > index and nums[i] == nums[i - 1]:
@@ -24,8 +24,8 @@ class Solution:
                 new_sum = curr_sum + nums[i]
 
                 # Filter out here for better efficiency
-                # if new_sum > k: # Removing this allows it to work for negatives
-                #     break
+                if new_sum > k: # Removing this allows it to work for negatives
+                    break
 
                 arr.append(nums[i])
                 dfs(i + 1, new_sum, arr)

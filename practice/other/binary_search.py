@@ -2,7 +2,7 @@ nums = [1, 7, 7, 7, 7, 7, 7, 11]
 target = 7
 
 # Given a sorted array of integers. Find the leftmost/rightmost occurence 
-# if target, if target does not exist, return the index where it 
+# of target, if target does not exist, return the index where it 
 # would be inserted
 
 def binary_search_left(nums, target):
@@ -15,12 +15,12 @@ def binary_search_left(nums, target):
     while L < R:
         M = (L + R) // 2
 
-        if nums[M] < target:
+        if nums[M] < target: # THIS IS THE ONLY LINE THAT IS DIFFERENT
             L = M + 1
         else:
             R = M
     
-    return L
+    return L # Always return left
             
 def binary_search_right(nums, target):
     if not nums:

@@ -18,31 +18,38 @@ not valid:
 
 '''
 
-def top_sort(root):
+from collections import defaultdict
+
+class Node:
+    def __init__(self, val, children=None):
+        self.val = val
+        self.children = children or []
+
+def process_leaves(root):
+    buckets = defaultdict(list)  # height -> list of node values
+
+    def height(node):
+        # A leaf has height 0; any other node is 1 above its tallest child.
+        node_height = 0
+        if node.children:
+            child_heights = []
+
+            for child in node.children:
+                child_heights.append(height(child))
+            
+            tallest_child = max(child_heights)
+            node_height = tallest_child + 1
+
+        buckets[node_height].append(node.val)
+        return node_height
+
+    if root:
+        height(root)
+
     result = []
-    master_visited = set()
-
-    def dfs(node, visited):
-        if (node.left is None and node.right is None) or (node.left in master_visited and node.right in master_visited):
-            result.append(node)
-            visited.add(node)
-            return visited
-        
-        if node.left is not None:
-            dfs(node.left, visited)
-        
-        if node.right is not None:
-            dfs(node.right, visited)
-        
-        return visited
-    
-    while root not in master_visited:
-        res = dfs(root)
-        master_visited.add(res)
-
-
-
-
+    for h in sorted(buckets):          # ascending: leaves first
+        result.extend(buckets[h])      # order within a level is arbitrary
+    return result
 
 
 
@@ -51,6 +58,7 @@ def top_sort(root):
 
 from collections import deque
 
+# Khans Algorithm
 def process_leaves(root):
     degree = {}
     parent = {}
