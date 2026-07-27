@@ -11,76 +11,58 @@
 # ("Team A", "Team B", or "Draw") along with a log of the battle.
 
 
-
-
 from collections import deque
 
 class Game:
-    def __init__(self, a_monsters, b_monsters):
-        self.a_monsters = deque(a_monsters)
-        self.b_monsters = deque(b_monsters)
-        self.remaining_a = len(a_monsters)
-        self.remaining_b = len(b_monsters)
+    def __init__(self, team_a, team_b):
+        self.team_a = deque(team_a)
+        self.team_b = deque(team_b)
         self.logs = []
 
     def play(self):
         self.logs.append("Match Started: Team A vs Team B")
 
-        while self.winner() is None:
-            a_monster = self.a_monsters[0]
-            b_monster = self.b_monsters[0]
+        while self.team_a and self.team_b:
+            a = self.team_a[0]
+            b = self.team_b[0]
 
-            self.logs.append(f"Round: {a_monster['name']} vs {b_monster['name']}")
+            self.logs.append(f"Round: {a['name']} vs {b['name']}")
 
-            a_is_killing_strike = self.attack(a_monster, b_monster)
-            if a_is_killing_strike:
-                self.remaining_b -= 1
-                self.b_monsters.popleft()
-            
-            self.logs.append(f"{a_monster['name']} attacks {b_monster['name']} for {a_monster['power']} damage. {b_monster['name']} HP: {b_monster['hp']}")
+            # Team A attacks
+            b["hp"] -= a["power"]
+            a_killed = b["hp"] <= 0
+            self.logs.append(
+                f"{a['name']} attacks {b['name']} for {a['power']} damage. {b['name']} HP: {b['hp']}"
+            )
 
-            b_is_killing_strike = self.attack(b_monster, a_monster)
-            if b_is_killing_strike:
-                self.remaining_a -= 1
-                self.a_monsters.popleft()
+            # Team B always gets a counterattack
+            a["hp"] -= b["power"]
+            b_killed = a["hp"] <= 0
 
-            # Change: Checked if Team B was killed this turn to inject the [dying strike] text
-            action_text = "executes a [dying strike] counterattack!" if a_is_killing_strike else "attacks"
-            self.logs.append(f"{b_monster['name']} {action_text} {a_monster['name']} for {b_monster['power']} damage. {a_monster['name']} HP: {a_monster['hp']}")
+            action = "uses a dying strike on" if a_killed else "attacks"
+            self.logs.append(
+                f"{b['name']} {action} {a['name']} for {b['power']} damage. {a['name']} HP: {a['hp']}"
+            )
 
-            if a_is_killing_strike:
-                self.logs.append(f"{b_monster['name']} has been eliminated")
+            if a_killed:
+                self.team_b.popleft()
+                self.logs.append(f"{b['name']} has been eliminated")
 
-            if b_is_killing_strike:
-                self.logs.append(f"{a_monster['name']} has been eliminated")
+            if b_killed:
+                self.team_a.popleft()
+                self.logs.append(f"{a['name']} has been eliminated")
 
         winner = self.winner()
+        self.logs.append("Draw!" if winner == "Draw" else f"{winner} wins!")
 
-        if winner == "Draw":
-            self.logs.append("Draw!")
-        else:
-            self.logs.append(f"{winner} wins the Match!")
-
-        return {
-            "winner": winner,
-            "logs": self.logs
-        }
-    
-    def attack(self, attacker, defender):
-        defender['hp'] -= attacker['power']
-        if defender['hp'] <= 0:
-            return True
-        return False
+        return {"winner": winner, "logs": self.logs}
 
     def winner(self):
-        if self.remaining_a > 0 and self.remaining_b > 0:
+        if self.team_a and self.team_b:
             return None
-        elif self.remaining_a <= 0 and self.remaining_b <= 0:
+        if not self.team_a and not self.team_b:
             return "Draw"
-        elif self.remaining_b <= 0:
-            return "Team A"
-        elif self.remaining_a <= 0:
-            return "Team B"
+        return "Team A" if self.team_a else "Team B"
 
 if __name__ == "__main__":
     a_monsters = [

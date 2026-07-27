@@ -4,6 +4,67 @@
 # the number of tokens a user has at any given timestamp. The service should 
 # handle credit additions, deductions, and historical balance lookups.
 
+
+
+import heapq
+class CreditTracker:
+    """
+    Incremental / online. Assumes operation timestamps are non-decreasing.
+    Each credit is pushed and popped from the heap exactly once, so every
+    operation is amortized O(log N).
+    """
+    def __init__(self) -> None:
+        self._heap = []   # [expiresAt, remaining], min-heap by soonest expiry
+        self._live = 0    # total non-expired, unspent credits
+        self._now = 0     # latest timestamp processed
+    
+    def _advance(self, timestamp: int) -> None:
+        if timestamp < self._now:
+            raise ValueError("Timestamps must be non-decreasing")
+        
+        self._now = timestamp
+
+        while self._heap and self._heap[0][0] <= timestamp:   # expire
+            self._live -= heapq.heappop(self._heap)[1]
+    
+    def createCredit(self, id: str, amount: int, timestamp: int, expiresAt: int) -> None:
+        if amount <= 0 or expiresAt <= timestamp:
+            raise ValueError("Invalid input")
+        
+        self._advance(timestamp)
+        heapq.heappush(self._heap, [expiresAt, amount])
+        self._live += amount
+    
+    def subtract(self, amount: int, timestamp: int) -> None:
+        if amount <= 0:
+            raise ValueError("Invalid input")
+        
+        self._advance(timestamp)
+
+        if amount > self._live:
+            raise ValueError("Insufficient funds")
+        
+        self._live -= amount
+
+        while amount > 0:                        # spend soonest-expiring first
+            top = self._heap[0]
+            take = min(top[1], amount)
+            top[1] -= take
+            amount -= take
+            if top[1] == 0:
+                heapq.heappop(self._heap)
+    
+    def getBalance(self, timestamp: int) -> int:
+        self._advance(timestamp)
+        return self._live
+
+
+
+
+
+
+
+
 CREATE, SUBTRACT = 0, 1
 
 class CreditTrackerInterview:
@@ -33,13 +94,14 @@ class CreditTrackerInterview:
         tokens_created = {}
 
         for event_timestamp, event_type, obj in events:
-            # 1. Grab all credits and subtractions that happend before the timestamp
-            # 2. Add the created credits to tokens_created (mapped by id)
-            # 3. If it is a subtraction do the following:
+            # 1. Sort events by when they happened
+            # 2. Loop through everything that happened before the timestamp
+            # 3. Add the created credits to tokens_created (mapped by id)
+            # 4. If it is a subtraction do the following:
             #       a. filter out the ones that expire before this subtraction
             #       b. sort all the remaining tokens_created by the expiration
             #       c. spend the soonest-expiring, non-expired credits first
-            # 4. Sum up all the tokens_created remaining that dont expire before timestamp
+            # 5. Sum up all the tokens_created remaining that dont expire before timestamp
             if timestamp < event_timestamp:
                 break
 

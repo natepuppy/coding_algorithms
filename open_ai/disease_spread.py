@@ -1,6 +1,5 @@
 
 import copy
-
 class Solution:
     def __init__(self, grid, infectThreshold, deathThreshold):
         self.grid = grid
@@ -12,52 +11,49 @@ class Solution:
             return self.grid
 
         ROWS, COLS = len(self.grid), len(self.grid[0])
-        directions = [
-            [-1, -1], 
-            [-1, 0], 
-            [-1, 1], 
-            [1, -1], 
-            [1, 0], 
-            [1, 1], 
-            [0, -1], 
-            [0, 1]
+        DIRS = [
+            (-1, -1), (-1, 0), (-1, 1),
+            ( 0, -1),          ( 0, 1),
+            ( 1, -1), ( 1, 0), ( 1, 1),
         ]
 
-        death_mark = [[False] * COLS for _ in range(ROWS)]
-        any_cells_updated = True
+        doomed = set()          # cells that will die when they resolve
+        changed = True
 
-        while any_cells_updated:
-            any_cells_updated = False
-            tomorrow = copy.deepcopy(self.grid)
-            new_death_mark = [[False] * COLS for _ in range(ROWS)]
+        while changed:
+            changed = False
+
+            # Build next round's grid as an independent copy of the current one.
+            nxt = copy.deepcopy(self.grid) # This is kinda slow
+            
+            new_doomed = set()
 
             for r in range(ROWS):
                 for c in range(COLS):
-                    if self.grid[r][c] in (2, 3):
-                        continue
-                    elif self.grid[r][c] == 1: # resolve infected cells
-                        if death_mark[r][c]:
-                            tomorrow[r][c] = 3
+                    cell = self.grid[r][c]
+
+                    if cell == 1:                    # infected -> resolve
+                        if (r, c) in doomed:
+                            nxt[r][c] = 3            # dies
                         else:
-                            tomorrow[r][c] = 2
-                        continue
+                            nxt[r][c] = 2            # recovers
+                    elif cell == 0:                  # susceptible -> maybe infect
+                        # Count how many of the eight neighbors are infected.
+                        infected_neighbors = 0
+                        for dr, dc in DIRS:
+                            nr, nc = r + dr, c + dc
+                            if 0 <= nr < ROWS and 0 <= nc < COLS:
+                                if self.grid[nr][nc] == 1:
+                                    infected_neighbors += 1
 
-                    infected_neighbors = 0
+                        if infected_neighbors >= self.infectThreshold:
+                            nxt[r][c] = 1
+                            changed = True
+                            if infected_neighbors >= self.deathThreshold:
+                                new_doomed.add((r, c))
+                    # cells 2 and 3 are terminal — the row copy already preserves them
 
-                    for dr, dc in directions:
-                        nr, nc = r + dr, c + dc
-                        if 0 <= nr < ROWS and 0 <= nc < COLS:
-                            if self.grid[nr][nc] == 1:
-                                infected_neighbors += 1
-
-                    if infected_neighbors >= self.infectThreshold:
-                        tomorrow[r][c] = 1
-                        any_cells_updated = True
-
-                        if infected_neighbors >= self.deathThreshold:
-                            new_death_mark[r][c] = True
-
-            self.grid = tomorrow
-            death_mark = new_death_mark
+            self.grid = nxt
+            doomed = new_doomed
 
         return self.grid

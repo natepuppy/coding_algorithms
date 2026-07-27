@@ -24,11 +24,18 @@ class Twitter:
         # include the user's own tweets plus everyone they follow
         users = self.following[userId] | {userId}
         candidates = []
+
         for uid in users:
-            candidates.extend(self.tweets[uid])
+            candidates += self.tweets[uid][-10:]
+        
         # 10 most recent by timestamp
         top = heapq.nlargest(10, candidates, key=lambda t: t[0])
-        return [tweetId for _, tweetId in top]
+
+        result = []
+        for tweet in top:
+            result.append(tweet[1])
+
+        return result
 
 # Your Twitter object will be instantiated and called as such:
 # obj = Twitter()

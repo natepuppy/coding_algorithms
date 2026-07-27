@@ -12,6 +12,9 @@
 # Return a list of timestamps (in milliseconds) at which notes (X) occur, 
 # assuming the first beat starts at 0 ms.
 
+# EX: Input: "X . [X,X] [X,[X,X]]"
+# Output: [0.0, 1000.0, 1250.0, 1500.0, 1750.0, 1875.0]
+
 class BeatNotation:
     def __init__(self, notation, bpm):
         self.notation = notation
@@ -19,34 +22,26 @@ class BeatNotation:
         self.result = []
     
     def run(self):
-        start = 0.0
-        end = self.beat_length
-
-        for string in self.notation.split(" "):
-            self._parse(string, start, self.beat_length)
-            start = end
-            end += self.beat_length
-
-        print(self.result)
-
+        for i, token in enumerate(self.notation.split()):
+            start = i * self.beat_length
+            self._parse(token, start, self.beat_length)
         return self.result
 
-    def _parse(self, string, start, beat_length):
-        if string == "X":
+
+    def _parse(self, token, start, length):
+        if token == "X":
             self.result.append(start)
             return
-        elif string == ".":
+
+        if token == ".":
             return
-        
-        string = string[1: len(string) - 1]
-        children = self._split(string)
 
-        new_start = start
-        new_beat_length = beat_length / len(children)
+        children = self._split(token[1:-1])
+        new_beat_length = length / len(children)
 
-        for child in children:
-            self._parse(child, new_start, new_beat_length)
-            new_start += new_beat_length
+        for i, child_token in enumerate(children):
+            new_start = start + i * new_beat_length
+            self._parse(child_token, new_start, new_beat_length)
 
     def _split(self, string):
         res = []
