@@ -16,33 +16,30 @@
 
 class Solution:
     def perm(self, nums):
-        if not nums:
-            return [[]] # Ask the interviewer what he wants returned here...
-        
-        nums.sort()
         result = []
         n = len(nums)
 
-        def dfs(index): # One Param
-            if index >= n:
+        def dfs(index):
+            if index == n:
                 result.append(nums.copy())
                 return
             
             visited = set()
-            
+
             for i in range(index, n):
                 if nums[i] in visited:
                     continue
                 
-                visited.add(nums[i])
+                visited.add(nums[i]) # Make sure to do this first before you switch everything
 
-                nums[index], nums[i] = nums[i], nums[index]
+                nums[i], nums[index] = nums[index], nums[i]
                 dfs(index + 1)
-                nums[index], nums[i] = nums[i], nums[index]
+                nums[i], nums[index] = nums[index], nums[i]
 
-        dfs(0) 
+        dfs(0)
 
         return result
+
 
 nums = [1,2,3, 3]
 print(Solution().perm(nums))

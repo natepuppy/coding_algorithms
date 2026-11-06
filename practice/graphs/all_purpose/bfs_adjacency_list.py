@@ -1,6 +1,7 @@
 # Used for shortest path when NOT weighted
 from collections import defaultdict
 from collections import deque
+
 class Solution:
     def bfs(self, edges, source, dest):
         graph = defaultdict(list)
@@ -12,7 +13,7 @@ class Solution:
         queue.append(source)
 
         # If I didn't have this, I would have neeeded a seen set, or remove from the path...
-        parents = {source: None}
+        parents[source] = None
         result = []
 
         while queue:
@@ -61,6 +62,67 @@ print(Solution().bfs(edges, "A", "D"))
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# from collections import defaultdict
+# from collections import deque
+# class Solution:
+#     def bfs(self, edges, source, dest):
+#         graph = defaultdict(list)
+#         for s, d in edges:
+#             graph[s].append(d)
+#             graph[d].append(s)
+        
+#         queue = deque()
+#         queue.append(source)
+
+#         # If I didn't have this, I would have neeeded a seen set, or remove from the path...
+#         parents = {source: None}
+#         result = []
+
+#         while queue:
+#             node = queue.popleft()
+
+#             if node == dest:
+#                 while node is not None:  # Do "is not None" instead of just while node, because node could be zero...
+#                     result.append(node)
+#                     node = parents[node]
+#                 break
+                
+#             for neighbor in graph[node]:
+#                 if neighbor not in parents:
+#                     queue.append(neighbor)
+#                     parents[neighbor] = node
+
+#         return result[::-1]
 
 
 

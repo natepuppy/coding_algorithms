@@ -5,12 +5,13 @@ class Node:
         self.right = right
 
 def dfs(root):
-    if not root: # Dont forget this
-        return None
+    if root is None:
+        return
     
-    print(root.val)
     dfs(root.left)
+    print(root.val)
     dfs(root.right)
+    
 
 root = Node(2, Node(1), Node(3))
 dfs(root)

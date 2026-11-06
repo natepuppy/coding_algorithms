@@ -15,26 +15,24 @@
 
 class Solution:
     def sub(self, nums):
-        # if not nums: dont put this here because the 
-        #     return []
-        
-        nums.sort()
         result = []
+        nums.sort()
 
-        def dfs(index, arr): # Two params
+        def dfs(arr, index):
             result.append(arr.copy())
 
             for i in range(index, len(nums)):
                 if i > index and nums[i] == nums[i - 1]:
                     continue
-            
+                
                 arr.append(nums[i])
-                dfs(i + 1, arr)
+                dfs(arr, i + 1)
                 arr.pop()
-            
-        dfs(0, [])
+
+        dfs([], 0)
 
         return result
+
 
 nums = [1, 1, 2, 3]
 print(Solution().sub(nums))

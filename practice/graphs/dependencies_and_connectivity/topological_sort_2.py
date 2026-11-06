@@ -60,30 +60,22 @@ from collections import deque
 
 # Khans Algorithm
 def process_leaves(root):
+    if not root:
+        return []
+
     degree = {}
     parent = {}
 
-    # Build maps
     def dfs(node):
-        if not node:
-            return 0
-        
-        left = dfs(node.left)
-        right = dfs(node.right)
-
-        degree[node] = (1 if node.left else 0) + (1 if node.right else 0)
-
-        if node.left:
-            parent[node.left] = node
-        if node.right:
-            parent[node.right] = node
-
-        return degree[node]
+        degree[node] = len(node.children)
+        for child in node.children:
+            parent[child] = node
+            dfs(child)
 
     dfs(root)
 
     # Start with leaves
-    queue = deque([node for node in degree if degree[node] == 0])
+    queue = deque(node for node in degree if degree[node] == 0)
     result = []
 
     while queue:

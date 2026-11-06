@@ -8,23 +8,23 @@ def insert(node, val):
     if not node:
         return Node(val)
     
-    if val < node.val:
-        node.left = insert(node.left, val)
-    else:
+    if val > node.val:
         node.right = insert(node.right, val)
+    else:
+        node.left = insert(node.left, val)
+    
     return node
 
 def search(node, val):
     if not node:
         return False
-        
-    if val == node.val:
-        return True
-
-    if val < node.val:
-        return search(node.left, val)
-    else:
+    
+    if val > node.val:
         return search(node.right, val)
+    elif val < node.val:
+        return search(node.left, val)
+    
+    return True
 
 def delete(root, val):
     if not root:
@@ -48,9 +48,10 @@ def delete(root, val):
     return root
 
 def find_min(node):
-    while node.left:
-        node = node.left
-    return node
+    if node.left is None:
+        return node
+    return find_min(node.left)
+    
 
 
 # --- Test ---

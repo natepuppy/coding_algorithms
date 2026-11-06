@@ -16,6 +16,7 @@ heapq.heappush(arr, 7)
 heapq.heappop(arr, 7)
 
 result = heapq.nsmallest(3, arr)
+result2 = heapq.nlargest(3, arr)
 
 
 

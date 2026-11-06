@@ -13,29 +13,57 @@
 
 # O(2^n)
 
-class Solution:
-    def sub(self, nums):
-        n = len(nums)
-        result = []
-        nums.sort() # Dont forget sort
 
-        def dfs(index, arr):
-            # no base case needed
-            result.append(arr.copy()) # Dont forget copy
-
-            for i in range(index, n):
-                if i > index and nums[i] == nums[i - 1]: # If not while
-                    continue
-
-                arr.append(nums[i])
-                dfs(i + 1, arr)
-                arr.pop()
-
-        dfs(0, [])
-
-        return result
 
         
 
 nums = [1, 2, 3]
 print(Solution().sub(nums))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# class Solution:
+#     def sub(self, nums):
+#         n = len(nums)
+#         result = []
+#         nums.sort() # Dont forget sort
+
+#         def dfs(index, arr):
+#             # no base case needed
+#             result.append(arr.copy()) # Dont forget copy
+
+#             for i in range(index, n):
+#                 if i > index and nums[i] == nums[i - 1]: # If not while
+#                     continue
+
+#                 arr.append(nums[i])
+#                 dfs(i + 1, arr)
+#                 arr.pop()
+
+#         dfs(0, [])
+
+#         return result

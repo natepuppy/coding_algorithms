@@ -32,7 +32,6 @@ def shortestPath(edges, n, src):
     
     return distances
 
-
 # From node 1, find the shortest path to every other node
 edges = [
     (1, 2, 4),
@@ -48,8 +47,8 @@ src = 1      # starting node
 result = shortestPath(edges, n, src)
 
 print("Shortest distances from node", src)
-for node in range(1, n + 1):
-    print(f"Node {node}: {result.get(node, 'unreachable')}")
+for node in range(n):
+    print(f"Node {node}: {result[node]}")
 
 
 
@@ -61,30 +60,30 @@ for node in range(1, n + 1):
 
 
 
-    if not edges:
-        return []
 
-    graph = defaultdict(list)
-    for u, v, w in edges:
-        graph[u].append((w, v))
-    
-    distances = [float("inf")] * n
-    distances[src] = 0
 
-    heap = []
-    heap.append((0, src))
 
-    while heap:
-        weight, node = heapq.heappop(heap)
 
-        if weight > distances[node]: # DONT forget this here!
-            continue
 
-        for w, neighbor in graph[node]:
-            new_weight = weight + w
 
-            if new_weight < distances[neighbor]: # Dont foget this here!!!!!
-                heapq.heappush(heap, (new_weight, neighbor))
-                distances[neighbor] = new_weight # ONLY update distances here!!!!!
 
-    return distances
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+
+'''

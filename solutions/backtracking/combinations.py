@@ -6,37 +6,70 @@
 
 # O(n choose k) or 2^n
 
+
 class Solution:
     def comb(self, nums, k):
-        result = []
-        nums.sort()
-
-        # Note: pass curr_sum -- sum(arr) is a O(n) operation
-        def dfs(index, curr_sum, arr):
-            if curr_sum == k:
-                result.append(arr.copy())
-                return # Removing this allows it to work for negatives
-
-            for i in range(index, len(nums)):
-                if i > index and nums[i] == nums[i - 1]:
-                    continue
-
-                new_sum = curr_sum + nums[i]
-
-                # Filter out here for better efficiency
-                if new_sum > k: # Removing this allows it to work for negatives
-                    break
-
-                arr.append(nums[i])
-                dfs(i + 1, new_sum, arr)
-                arr.pop()
-
-        dfs(0, 0, [])
-
-        return result
+        pass
+    
 
 
 nums = [1, 2, 3, 1, 6, 4]
 k = 7
 
 print(Solution().comb(nums, k))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# class Solution:
+#     def comb(self, nums, k):
+#         result = []
+#         nums.sort()
+
+#         # Note: pass curr_sum -- sum(arr) is a O(n) operation
+#         def dfs(index, curr_sum, arr):
+#             if curr_sum == k:
+#                 result.append(arr.copy())
+#                 return # Removing this allows it to work for negatives
+
+#             for i in range(index, len(nums)):
+#                 if i > index and nums[i] == nums[i - 1]:
+#                     continue
+
+#                 new_sum = curr_sum + nums[i]
+
+#                 # Filter out here for better efficiency
+#                 if new_sum > k: # Removing this allows it to work for negatives
+#                     break
+
+#                 arr.append(nums[i])
+#                 dfs(i + 1, new_sum, arr)
+#                 arr.pop()
+
+#         dfs(0, 0, [])
+
+#         return result
