@@ -13,6 +13,87 @@
 # same group. It is incredibly efficient for detecting cycles in 
 # undirected graphs
 
+# This is MAINLY for undirected graphs
+
+class UnionFind:
+    def __init__(self, n):
+        self.parent = {}
+        self.rank = {}
+
+        for i in range(n):
+            self.parent[i] = i
+            self.rank[i] = 0
+    
+    # Find the root of this node's connected component
+    def find(self, node):
+        if self.parent[node] == node:
+            return node
+        
+        # Path Compression
+        self.parent[node] = self.find(self.parent[node])
+
+        return self.parent[node]
+    
+    def union(self, n1, n2):
+        p1, p2 = self.find(n1), self.find(n2)
+
+        if p1 == p2:
+            return False
+        
+        if self.rank[p1] > self.rank[p2]:
+            self.parent[p2] = p1
+        elif self.rank[p2] > self.rank[p1]:
+            self.parent[p1] = p2
+        else:
+            self.rank[p1] += 1
+            self.parent[p2] = p1
+        
+        return True
+
+def find_redundant_connection(edges):
+    uf = UnionFind(len(edges))
+    result = []
+    for n1, n2 in edges:
+        if not uf.union(n1, n2):
+            # Leetcode 684 asks for the last edge, that is why there is no break here
+            result = [n1, n2]
+    return result
+
+
+edges = [[0, 1], [0, 2], [2, 3], [1, 3]]
+print(find_redundant_connection(edges))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
 
 class UnionFind:
     def __init__(self, n):
@@ -48,12 +129,5 @@ class UnionFind:
         
         return True
 
-n = 4
-edges = [[0,1],[0,2],[2,3],[1,3]]
-union_find = UnionFind(n)
 
-for n1, n2 in edges:
-    if not union_find.union(n1, n2):
-        return [n1, n2]
-return []
-
+'''

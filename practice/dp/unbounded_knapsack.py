@@ -4,6 +4,69 @@
 # is profit[i] and it's weight is weight[i]. Assume you can
 # have an unlimited number of each item available. 
 
+from functools import cache
+
+class Solution:
+    def top_down(self, profits, weights, capacity):
+        
+        @cache
+        def dfs(i, rem_capacity):
+            if i >= len(profits):
+                return 0
+            
+            # Without i
+            profit_without = dfs(i + 1, rem_capacity)
+
+            # With i
+            profit_with = 0
+            if rem_capacity - weights[i] >= 0: # Use >= NOT > !!!!!
+                profit_with = profits[i] + dfs(i, rem_capacity - weights[i])
+
+            return max(profit_without, profit_with)
+
+        
+        return dfs(0, capacity)
+
+
+
+    def bottom_up(self, profits, weights, capacity):
+        dp = [0] * (capacity + 1)
+
+        for i in range(len(profits)):
+            profit = profits[i]
+            weight = weights[i]
+
+            for j in range(weight, capacity + 1):
+                dp[j] = max(dp[j], dp[j - weight] + profit)
+        
+        return dp[capacity]
+        
+
+
+profits = [15, 50, 60, 90]
+weights = [1, 3, 4, 5]
+capacity = 8
+
+print(Solution().top_down(profits, weights, capacity))
+print(Solution().bottom_up(profits, weights, capacity))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+'''
+
 class Solution:
     def top_down(self, profits, weights, capacity):
         cache = {}
@@ -46,9 +109,4 @@ class Solution:
         
         return dp[capacity]
 
-profits = [15, 50, 60, 90]
-weights = [1, 3, 4, 5]
-capacity = 8
-
-print(Solution().top_down(profits, weights, capacity))
-print(Solution().bottom_up(profits, weights, capacity))
+'''

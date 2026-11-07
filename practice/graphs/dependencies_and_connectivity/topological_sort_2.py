@@ -18,6 +18,7 @@ not valid:
 
 '''
 
+
 from collections import defaultdict
 
 class Node:
@@ -53,13 +54,10 @@ def process_leaves(root):
 
 
 
-
-
-
 from collections import deque
 
 # Khans Algorithm
-def process_leaves(root):
+def process_leaves_2(root):
     if not root:
         return []
 
@@ -74,8 +72,11 @@ def process_leaves(root):
 
     dfs(root)
 
-    # Start with leaves
-    queue = deque(node for node in degree if degree[node] == 0)
+    # Initial leaves: every node with no children (degree[node] == 0).
+    queue = deque()
+    for node in degree:
+        if degree[node] == 0:
+            queue.append(node)
     result = []
 
     while queue:
